@@ -9,6 +9,7 @@ dotenv.config(); // Initialize dotenv to read .env file
 //const bookRoutes = require('./routes/bookRoutes');
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/library';
 
+//Connects to the MongoDB database
 mongoose.connect(mongoURI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
