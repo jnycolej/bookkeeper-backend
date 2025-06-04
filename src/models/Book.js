@@ -4,13 +4,14 @@ const bookSchema = new mongoose.Schema({
   title: { type: String, required: true },
   author: [{ type: String, required: true }],
   genres: [{ type: String }],
-  pageCount: Number,
-  publicationYear: Number,
+  pageCount: {type: Number, default: null},
+  publicationYear: {type: Number, default: null},
   status: {
     type: String,
-    enum: ['read', 'currently_reading', 'want_to_read'],
-    default: 'want_to_read',
+    enum: ['read', 'currently_reading', 'unread'],
+    default: 'unread',
   },
+  series: { type: String},
   
 });
 
