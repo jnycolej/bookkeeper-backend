@@ -3,8 +3,9 @@ const router = express.Router();
 const Book = require('../models/Book'); // Import the Mongoose model
 
 //Route to count books by status
-router.get('/books/count', async(req, res) => {
+router.get('/count', async(req, res) => {
   try {
+    //Counts each book by the reading status
     const countByStatus = await Book.aggregate([
       { 
         $group: { 
@@ -12,24 +13,27 @@ router.get('/books/count', async(req, res) => {
           count: { $sum: 1 }}}
     ]);
 
+    //Initializes to keep track of the counts
     const counts = {
       read: 0,
-      want_to_read: 0,
+      unread: 0,
       currently_reading: 0
     };
 
+    //Makes sure that each of the books counted are unique and not repeated
     countByStatus.forEach(({ _id, count}) => {
       if (_id) {
         counts[_id] = count;
       }
     });
 
-    res.json(counts);
+    res.json(counts); //returns the finished counts
   } catch (error) {
       console.error("Error fetching book counts:", error);
       res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 // Get all books
 router.get('/', async (req, res) => {
   try {
@@ -100,5 +104,8 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update book' });
   }
 });
+
+//Remove a book by id
+
 
 module.exports = router;
