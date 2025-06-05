@@ -3,30 +3,40 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');   // Allows servers to access resources
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config(); // Initialize dotenv to read .env file
+
+// Initialize an Express application
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use('/auth', authRoutes);
+
+const PORT = process.env.PORT || 5000;
 
 //const bookRoutes = require('./routes/bookRoutes');
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/library';
 
-//Connects to the MongoDB database
-mongoose.connect(mongoURI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('Error connecting to MongoDB:', err));
+// //Connects to the MongoDB database
+// mongoose.connect(mongoURI)
+//     .then(() => console.log('MongoDB connected'))
+//     .catch(err => console.error('Error connecting to MongoDB:', err));
 
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => {
+        app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+    })
+    .catch(err => console.error(err));
+    
 const bookRoutes = require('./routes/bookRoutes');
 
-// Initialize an Express application
-const app = express();
-
-const PORT = process.env.PORT || 5000;
-
-app.use(cors());
-app.use(express.json());
 
 async function startServer() {
     try {
         // Use your routes
+        
         app.use('/books', bookRoutes);
 
         app.get('/test-connection', async (req, res) => {
