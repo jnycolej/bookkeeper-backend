@@ -12,8 +12,12 @@ const bookSchema = new mongoose.Schema({
     default: 'unread',
   },
   series: { type: String},
-  
-});
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+}, {timestamps: true});
 
 const Book = mongoose.model('Book', bookSchema);
 

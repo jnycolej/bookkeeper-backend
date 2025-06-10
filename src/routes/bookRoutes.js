@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const bookController = require('../controllers/bookController');
+
 const Book = require('../models/Book'); // Import the Mongoose model
 
 //Route to count books by status
@@ -106,6 +108,5 @@ router.put('/:id', async (req, res) => {
 });
 
 //Remove a book by id
-
 
 module.exports = router;
