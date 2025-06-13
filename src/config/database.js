@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config(); // Initialize dotenv to read .env file
 
 // MongoDB connection URI (read from .env or use a default)
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/library';
+const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/library';
 // Create a new MongoClient instance
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
