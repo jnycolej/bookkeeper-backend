@@ -8,16 +8,22 @@ const bookSchema = new mongoose.Schema({
   publicationYear: {type: Number, default: null},
   status: {
     type: String,
-    enum: ['read', 'currently_reading', 'unread'],
-    default: 'unread',
+    enum: ['read', 'currentlyReading', 'owned', 'want'],
+    default: 'want',
   },
+  format: {type: String, enum: ['physical', 'ebook', 'library']},
   series: { type: String},
+  rating: {type: Number, default: null},
+  dateAdded: {type: Date, default: Date.now},
+  dateFinished: {type: Date, default: null},
+  isbn10: {type: String, default: null},
+  isbn13: {type: String, default: null},
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
   },
 }, {timestamps: true});
+
+bookSchema.index({owner: 1});
 
 const Book = mongoose.model('Book', bookSchema);
 
