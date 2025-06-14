@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bookRoutes = require('./routes/bookRoutes');
+const userRoutes = require('./routes/userRoutes');
 const { checkJwt, attachUser } = require('./middleware/auth');
 
 dotenv.config(); // Initialize dotenv to read .env file
@@ -14,10 +15,6 @@ const app = express();
 //Database connection
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/library';
-
-app.get('/api/ping', (req, res) => {
-    res.send('pong');
-});
 
 // 1) Enable CORS for your front-end origin (and allow preflight)
 app.use(
@@ -35,10 +32,19 @@ app.options('*', cors());
 app.use(express.json());
 
 //Mount API routes
-app.use('/api/books', 
+app.use(
+    '/api/books', 
     checkJwt,
     attachUser,
-    bookRoutes);
+    bookRoutes
+);
+
+app.use(
+    '/api/users',
+    checkJwt,
+    attachUser,
+    userRoutes
+);
 
 // at the very bottom of index.js, before connecting to Mongo
 app.use((err, req, res, next) => {
