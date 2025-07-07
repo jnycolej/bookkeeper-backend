@@ -18,6 +18,7 @@ const bookSchema = new mongoose.Schema({
   dateFinished: {type: Date, default: null},
   isbn10: {type: String, default: null},
   isbn13: {type: String, default: null},
+  asin: {type: String, default: null},
   owner: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
   },
