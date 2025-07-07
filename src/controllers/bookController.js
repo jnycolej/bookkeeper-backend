@@ -18,10 +18,14 @@ exports.createBook = async (req, res) => {
         // req.user._id was set by authMiddleware
         const newBook = new Book({
             title: req.body.title,
+            series: req.body.series,
             author: req.body.author,
+            isbn10: req.body.isbn10,
+            isbn13: req.body.isbn13,
             genres: req.body.genres,
             publicationYear: req.body.publicationYear,
             pageCount: req.body.pageCount,
+            format: req.body.format,
             status: req.body.status,
             owner: req.user._id
         });
