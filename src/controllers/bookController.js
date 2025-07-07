@@ -22,6 +22,7 @@ exports.createBook = async (req, res) => {
             author: req.body.author,
             isbn10: req.body.isbn10,
             isbn13: req.body.isbn13,
+            asin:   req.body.asin,
             genres: req.body.genres,
             publicationYear: req.body.publicationYear,
             pageCount: req.body.pageCount,
