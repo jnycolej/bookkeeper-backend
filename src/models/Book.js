@@ -19,6 +19,8 @@ const bookSchema = new mongoose.Schema({
   isbn10: {type: String, default: null},
   isbn13: {type: String, default: null},
   asin: {type: String, default: null},
+  kindleUnlimited: {type: Boolean, default: false},
+  libby: {type: Boolean, default: false},
   owner: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
   },
