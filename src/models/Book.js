@@ -13,6 +13,10 @@ const bookSchema = new mongoose.Schema({
   },
   format: {type: String, enum: ['physical', 'ebook', 'library'], default: null},
   series: { type: String, default: null},
+  seriesNum: {type: Number, min: 0, max: 999, default: null, validate: {
+    validator: v => v == null || Number.isInteger(v),
+    message: 'seriesNum must be an integer'
+  }},
   rating: {type: Number, default: null},
   dateAdded: {type: Date, default: Date.now},
   dateFinished: {type: Date, default: null},
