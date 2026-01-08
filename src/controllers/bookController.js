@@ -22,9 +22,9 @@ exports.createBook = async (req, res) => {
       title: req.body.title,
       series: req.body.series,
       seriesNum:
-        body.seriesNum == null || body.seriesNum === ""
+        req.body.seriesNum == null || req.body.seriesNum === ""
           ? null
-          : Number(body.seriesNum),
+          : Number(req.body.seriesNum),
       author: req.body.author,
       isbn10: req.body.isbn10,
       isbn13: req.body.isbn13,
