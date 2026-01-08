@@ -16,20 +16,24 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/library';
 
-// 1) Enable CORS for your front-end origin (and allow preflight)
-app.use(
-  cors({
-    origin: 'http://localhost:3000',         // React dev server
-    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-    allowedHeaders: ['Content-Type','Authorization'],
-    credentials: true,                       // if you ever send cookies/auth headers
-  })
-);
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true,
+};
+// Enable CORS for front-end origin (and allow preflight)
+app.use(cors(corsOptions));
 // Handle OPTIONS preflight for all routes
-app.options('*', cors());
+app.options('*', cors(corsOptions));
 
 //JSON parser
 app.use(express.json());
+
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
 
 //Mount API routes
 app.use(
