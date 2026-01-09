@@ -9,13 +9,16 @@ const {
   updateBook,
   deleteBook,
   countBooksByStatus,
-  getDistinctGenres
+  getDistinctGenres,
+  getYearlyReadCount
 } = require('../controllers/bookController');
 
 // 1) Count endpoint
 //    GET /api/books/count
 router.get('/count', countBooksByStatus);
 
+//Year count endpoint
+router.get('/read-count/:year', getYearlyReadCount);
 // 2) Genres endpoint
 //    GET /api/books/genres
 router.get('/genres', getDistinctGenres);

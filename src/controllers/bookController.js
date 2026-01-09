@@ -36,6 +36,13 @@ exports.createBook = async (req, res) => {
       status: req.body.status,
       libby: req.body.libby,
       kindleUnlimited: req.body.kindleUnlimited,
+      dateFinished:
+        req.body.status === "read"
+          ? req.body.dateFinished
+            ? new Date(req.body.dateFinished)
+            : new Date()
+          : null,
+
       owner: req.user._id,
     });
     const saved = await newBook.save();
@@ -64,15 +71,36 @@ exports.getBookById = async (req, res) => {
 exports.updateBook = async (req, res) => {
   try {
     const bookId = req.params.id;
-    //When updating, ensure the book's owner is this user
-    const updated = await Book.findOneAndUpdate(
-      { _id: bookId, owner: req.user._id },
-      { $set: req.body },
-      { new: true, runValidators: true }
-    );
-    if (!updated) {
+
+    // Get existing book first so we can compare status/dateFinished
+    const existing = await Book.findOne({ _id: bookId, owner: req.user._id });
+    if (!existing) {
       return res.status(404).json({ error: "Book not found or not yours." });
     }
+
+    const updates = { ...req.body };
+
+    // If status is being set to "read", set dateFinished (if missing)
+    if (updates.status === "read") {
+      // If client provided a dateFinished explicitly, honor it
+      if (updates.dateFinished) {
+        updates.dateFinished = new Date(updates.dateFinished);
+      } else if (!existing.dateFinished) {
+        updates.dateFinished = new Date();
+      }
+    }
+
+    // If status is being changed away from "read", clear dateFinished
+    if (updates.status && updates.status !== "read") {
+      updates.dateFinished = null;
+    }
+
+    const updated = await Book.findOneAndUpdate(
+      { _id: bookId, owner: req.user._id },
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+
     return res.json(updated);
   } catch (err) {
     console.error(err);
@@ -127,5 +155,28 @@ exports.getDistinctGenres = async (req, res) => {
   } catch (err) {
     console.error("Error fetching genres:", err);
     return res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getYearlyReadCount = async (req, res) => {
+  try {
+    const year = Number(req.params.year);
+    if (!Number.isInteger(year)) {
+      return res.status(400).json({ error: "Invalid year." });
+    }
+
+    const start = new Date(year, 0, 1);           // Jan 1
+    const end = new Date(year + 1, 0, 1);         // Jan 1 next year (exclusive)
+
+    const count = await Book.countDocuments({
+      owner: req.user._id,
+      status: "read",
+      dateFinished: { $gte: start, $lt: end },
+    });
+
+    return res.json({ year, count });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to fetch yearly read count." });
   }
 };
