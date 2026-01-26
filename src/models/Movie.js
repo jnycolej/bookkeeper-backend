@@ -4,14 +4,15 @@ const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   director: [{ type: String, required: true }],
   screenwriter: [{type: String}],
-  actor: [{type: String}],
+  studio: { type: String},
+  actors: [{type: String}],
   genres: [{ type: String }],
   duration: { type: Number, default: null },
-  releaseDate: { type: Number, default: null },
+  releaseYear: { type: Number, default: null },
   status: {
     type: String,
-    enum: ["seen", "wantToSee"],
-    default: "wantToSee",
+    enum: ["watched", "wantToWatch"],
+    default: "wantToWatch",
   },
   format: {
     type: String,
@@ -30,7 +31,11 @@ const movieSchema = new mongoose.Schema({
     },
   },
   rating: {type: Number, default: null},
+  dateFinished: {type:Date, default: null},
   dateAdded: {type: Date, default: Date.now},
+  owner: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
+  },
 
 }, {timestamps: true});
 
