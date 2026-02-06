@@ -55,7 +55,7 @@ exports.createMovie = async (req, res) => {
 exports.getMovieById = async (req, res) => {
   try {
     const movieId = req.params.id;
-    //Find the book only if it belongs to this user
+    //Find the movie only if it belongs to this user
     const movie = await Movie.findOne({ _id: movieId, owner: req.user._id });
     if (!movie) {
       return res.status(404).json({ error: "Movie not found." });

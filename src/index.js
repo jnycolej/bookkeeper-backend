@@ -6,6 +6,8 @@ const cors = require("cors");
 const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
 const movieRoutes = require("./routes/movieRoutes");
+const videoGameRoutes = require("./routes/videoGameRoutes");
+const tvRoutes = require("./routes/tvRoutes");
 const { checkJwt, attachUser } = require("./middleware/auth");
 
 dotenv.config(); // Initialize dotenv to read .env file
@@ -39,6 +41,9 @@ app.use((req, res, next) => {
 //Mount API routes
 app.use("/api/library/books", checkJwt, attachUser, bookRoutes);
 app.use("/api/library/movies", checkJwt, attachUser, movieRoutes);
+app.use("/api/library/videogames", checkJwt, attachUser, videoGameRoutes);
+app.use("/api/library/tvshows", checkJwt, attachUser, tvRoutes);
+
 app.use("/api/users", checkJwt, attachUser, userRoutes);
 
 // at the very bottom of index.js, before connecting to Mongo
