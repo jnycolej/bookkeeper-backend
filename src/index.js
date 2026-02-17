@@ -7,6 +7,8 @@ const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 const videoGameRoutes = require("./routes/videoGameRoutes");
+const igdbRoutes = require('./routes/igdbRoutes');
+const tmdbRoutes = require('./routes/tmdbRoutes.js');
 const tvRoutes = require("./routes/tvRoutes");
 const { checkJwt, attachUser } = require("./middleware/auth");
 
@@ -37,12 +39,15 @@ app.use((req, res, next) => {
   if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
 });
+app.use("/api/tmdb", tmdbRoutes);
 
 //Mount API routes
 app.use("/api/library/books", checkJwt, attachUser, bookRoutes);
 app.use("/api/library/movies", checkJwt, attachUser, movieRoutes);
 app.use("/api/library/videogames", checkJwt, attachUser, videoGameRoutes);
 app.use("/api/library/tvshows", checkJwt, attachUser, tvRoutes);
+
+app.use("/api/igdb", igdbRoutes);
 
 app.use("/api/users", checkJwt, attachUser, userRoutes);
 
