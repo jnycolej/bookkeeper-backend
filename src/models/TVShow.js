@@ -32,6 +32,7 @@ const tvShowSchema = new mongoose.Schema(
     dateAdded: { type: Date },
     dateStarted: { type: Date },
     dateFinished: { type: Date },
+    tmdbId: {type: Number, required: false},
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
