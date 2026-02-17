@@ -30,6 +30,10 @@ const videoGameSchema = new mongoose.Schema(
     dateAdded: { type: Date },
     dateStarted: { type: Date },
     dateFinished: { type: Date },
+
+    igdbId: {type:String},
+    coverUrl: {type: String},
+
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
