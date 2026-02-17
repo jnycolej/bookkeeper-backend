@@ -1,6 +1,18 @@
 // CRUD logic for books
 const Movie = require("../models/Movie");
 
+const splitSemi = (val) =>
+  String(val ?? "")
+    .split(";")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+const normalizeStringArray = (val) => {
+  if (Array.isArray(val)) return val.flatMap(splitSemi); // flattens safely
+  return splitSemi(val);
+};
+
+const uniq = (arr) => [...new Set(arr)];
 exports.getAllMovies = async (req, res) => {
   try {
     //Only return books belonging to this user
@@ -20,21 +32,22 @@ exports.createMovie = async (req, res) => {
     // req.user._id was set by authMiddleware
     const newMovie = new Movie({
       title: req.body.title,
+      director: uniq(normalizeStringArray(req.body.director)),
+      screenwriter: req.body.screenwriter,
+      studio: req.body.studio,
+      productionCompany: uniq(normalizeStringArray(req.body.productionCompany)),
+      actors: uniq(normalizeStringArray(req.body.actors)),
+      genres: uniq(normalizeStringArray(req.body.genres)),
+      duration: req.body.duration,
+      releaseYear: req.body.releaseYear,
+      status: req.body.status,
+      format: req.body.format,
       series: req.body.series,
       seriesNum:
         req.body.seriesNum == null || req.body.seriesNum === ""
           ? null
           : Number(req.body.seriesNum),
-      duration: req.body.duration,
-      director: req.body.director,
-      screenwriter: req.body.screenwriter,
-      studio: req.body.studio,
-      actors: req.body.actors,
-      genres: req.body.genres,
-      releaseYear: req.body.releaseDate,
-      format: req.body.format,
       rating: req.body.rating,
-      status: req.body.status,
       dateFinished:
         req.body.status === "watched"
           ? req.body.dateFinished
@@ -42,6 +55,11 @@ exports.createMovie = async (req, res) => {
             : new Date()
           : null,
       dateAdded: req.body.dateAdded,
+      storyBy: uniq(normalizeStringArray(req.body.storyBy)),
+      producers: uniq(normalizeStringArray(req.body.producers)),
+      cinematography: uniq(normalizeStringArray(req.body.cinematography)),
+      musicBy: uniq(normalizeStringArray(req.body.musicBy)),
+      country: uniq(normalizeStringArray(req.body.country)),
       owner: req.user._id,
     });
     const saved = await newMovie.save();
@@ -78,7 +96,24 @@ exports.updateMovie = async (req, res) => {
     }
 
     const updates = { ...req.body };
-
+    if ("actors" in updates)
+      updates.actors = uniq(normalizeStringArray(updates.actors));
+    if ("genres" in updates)
+      updates.genres = uniq(normalizeStringArray(updates.genres));
+    if ("director" in updates)
+      updates.director = uniq(normalizeStringArray(updates.director));
+    if ("productionCompany" in updates)
+      updates.productionCompany = uniq(normalizeStringArray(updates.productionCompany));
+    if ("storyBy" in updates)
+      updates.storyBy = uniq(normalizeStringArray(updates.storyBy));
+    if ("producers" in updates)
+        updates.producers = uniq(normalizeStringArray(updates.producers));
+    if ("cinematography" in updates)
+        updates.cinematography = uniq(normalizeStringArray(updates.cinematography));
+    if ("musicBy" in updates)
+        updates.musicBy = uniq(normalizeStringArray(updates.musicBy));
+    if ("country" in updates)
+        updates.country = uniq(normalizeStringArray(updates.country));
     // If status is being set to "read", set dateFinished (if missing)
     if (updates.status === "watched") {
       // If client provided a dateFinished explicitly, honor it
