@@ -34,6 +34,7 @@ exports.createBook = async (req, res) => {
       pageCount: req.body.pageCount,
       format: req.body.format,
       status: req.body.status,
+      rereadCount: req.body.rereadCount,
       libby: req.body.libby,
       kindleUnlimited: req.body.kindleUnlimited,
       dateFinished:

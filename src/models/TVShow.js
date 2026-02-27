@@ -26,9 +26,10 @@ const tvShowSchema = new mongoose.Schema(
     basedOn: { type: String },
     status: {
       type: String,
-      enum: ["watched", "watching", "wantToWatch"],
+      enum: ["watched", "watching", "wantToWatch", "rewatching"],
       default: "wantToWatch",
     },
+    rewatchCount: {type: Number, default: 0},
     dateAdded: { type: Date },
     dateStarted: { type: Date },
     dateFinished: { type: Date },

@@ -41,6 +41,7 @@ exports.createMovie = async (req, res) => {
       duration: req.body.duration,
       releaseYear: req.body.releaseYear,
       status: req.body.status,
+      rewatchCount: req.body.rewatchCount,
       format: req.body.format,
       series: req.body.series,
       seriesNum:

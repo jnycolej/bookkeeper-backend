@@ -46,6 +46,7 @@ exports.createTVShow = async (req, res) => {
       episodes: req.body.episodes,
       basedOn: req.body.basedOn,
       status: req.body.status,
+      rewatchCount: req.body.rewatchCount,
       dateAdded: req.body.dateAdded,
       dateStarted: req.body.dateStarted,
       dateFinished:

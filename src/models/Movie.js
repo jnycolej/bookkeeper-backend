@@ -17,9 +17,10 @@ const movieSchema = new mongoose.Schema(
     releaseYear: { type: Number, default: null },
     status: {
       type: String,
-      enum: ["watched", "wantToWatch", "watching", "owned"],
+      enum: ["watched", "wantToWatch", "watching", "owned", "rewatching"],
       default: "wantToWatch",
     },
+    rewatchCount: {type: Number, default: 0},
     format: {
       type: String,
       enum: ["physical", "streaming", "digital"],

@@ -23,9 +23,10 @@ const videoGameSchema = new mongoose.Schema(
     format: [{ type: String }],
     status: {
       type: String,
-      enum: ["completed", "playing", "wantToPlay"],
+      enum: ["completed", "playing", "wantToPlay", "replaying"],
       default: "wantToPlay",
     },
+    replayCount: {type: Number, default: 0},
     rating: { type: Number },
     dateAdded: { type: Date },
     dateStarted: { type: Date },

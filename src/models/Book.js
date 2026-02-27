@@ -8,9 +8,10 @@ const bookSchema = new mongoose.Schema({
   publicationYear: {type: Number, default: null},
   status: {
     type: String,
-    enum: ['read', 'currentlyReading', 'owned', 'want'],
+    enum: ['read', 'currentlyReading', 'owned', 'want', "rereading"],
     default: 'want',
   },
+  rereadCount: {type: Number, default: 0},
   format: {type: String, enum: ['physical', 'ebook', 'library'], default: null},
   series: { type: String, default: null},
   seriesNum: {type: Number, min: 0, max: 999, default: null, validate: {

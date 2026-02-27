@@ -41,6 +41,7 @@ exports.createVideoGame = async (req, res) => {
       format: req.body.format,
 
       status: req.body.status,
+      replayCount: req.body.replayCount,
       rating: req.body.rating,
 
       dateAdded: req.body.dateAdded,
