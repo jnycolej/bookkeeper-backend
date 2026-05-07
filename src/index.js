@@ -18,11 +18,17 @@ dotenv.config(); // Initialize dotenv to read .env file
 const app = express();
 
 //Database connection
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/library";
+const PORT = process.env.PORT || 5050;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/library";
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -39,6 +45,11 @@ app.use((req, res, next) => {
   if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
 });
+
+app.get("/", (req, res) => {
+  res.send("BookKeeper API running");
+});
+
 app.use("/api/tmdb", tmdbRoutes);
 
 //Mount API routes
@@ -59,7 +70,7 @@ app.use((err, req, res, next) => {
 
 //Connect to Mongo
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGODB_URI)
   .then(() => {
     console.log("MongoDB connected");
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
