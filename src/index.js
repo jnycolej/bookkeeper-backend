@@ -7,8 +7,8 @@ const bookRoutes = require("./routes/bookRoutes");
 const userRoutes = require("./routes/userRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 const videoGameRoutes = require("./routes/videoGameRoutes");
-const igdbRoutes = require('./routes/igdbRoutes');
-const tmdbRoutes = require('./routes/tmdbRoutes.js');
+const igdbRoutes = require("./routes/igdbRoutes");
+const tmdbRoutes = require("./routes/tmdbRoutes.js");
 const tvRoutes = require("./routes/tvRoutes");
 const { checkJwt, attachUser } = require("./middleware/auth");
 
@@ -19,11 +19,13 @@ const app = express();
 
 //Database connection
 const PORT = process.env.PORT || 5050;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/library";
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/library";
 
 const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
+  "https://bookkeeperapp-frontend-21bdde81eaa9.herokuapp.com",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
